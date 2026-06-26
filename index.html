@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Travel Planner</title>
-  <link rel="stylesheet" href="style.css?v=clean1" />
+  <link rel="stylesheet" href="style.css?v=polish2" />
 </head>
 <body>
   <main class="app">
@@ -58,9 +58,13 @@
 
     <section class="page" id="mapPage">
       <div class="page-title"><h2>地圖</h2></div>
-      <section class="card">
+      <section class="card map-search-card">
         <input id="mapSearch" placeholder="輸入地點，例如 胡志明市博物館" />
         <button class="primary" onclick="openMapSearch()">開啟 Google Maps</button>
+      </section>
+      <section class="map-preview">
+        <div class="map-pin">📍</div>
+        <div class="map-label">行程地圖預覽</div>
       </section>
       <div id="mapPlaces"></div>
     </section>
@@ -117,6 +121,6 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-  <script src="script.js?v=clean1"></script>
+  <script src="script.js?v=polish2"></script>
 </body>
 </html>

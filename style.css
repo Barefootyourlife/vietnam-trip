@@ -356,3 +356,218 @@ dialog .primary,.close{
   .page{display:block!important}
   .card,.list-item{box-shadow:none}
 }
+
+/* polished v2：字體、卡片、首頁置中、地圖預覽 */
+body{
+  letter-spacing:.01em;
+}
+h1,h2,.page-title h2,.card-title h2{
+  font-family:"Noto Serif TC","Noto Sans TC",serif !important;
+  font-weight:900;
+  letter-spacing:-.03em;
+}
+.page-title h2{
+  font-size:38px !important;
+  color:#2a211a;
+}
+.card-title h2{
+  font-size:30px !important;
+}
+.hero{
+  min-height:270px;
+}
+.hero-bg{
+  width:92% !important;
+  height:220px !important;
+  right:-58px !important;
+  top:4px !important;
+  opacity:.45 !important;
+  filter:sepia(.32) saturate(.92) contrast(.95) !important;
+  background:
+    linear-gradient(90deg,rgba(251,242,223,.98) 0%,rgba(251,242,223,.46) 38%,rgba(251,242,223,.82) 100%),
+    url("https://images.unsplash.com/photo-1583417319070-4a69db38a482?q=80&w=1200&auto=format&fit=crop") !important;
+  background-size:cover !important;
+  background-position:center !important;
+}
+.kicker{
+  font-size:24px !important;
+  margin-top:4px;
+}
+.trip-note{
+  font-size:19px !important;
+}
+.card,.list-item,.tip-card{
+  background:rgba(255,253,248,.88) !important;
+  backdrop-filter:blur(10px);
+}
+.list-item{
+  position:relative;
+  overflow:hidden;
+}
+.list-item::after{
+  content:"";
+  position:absolute;
+  right:0;
+  top:0;
+  width:42%;
+  height:100%;
+  background:
+    linear-gradient(90deg,rgba(255,253,248,0),rgba(255,253,248,.75)),
+    radial-gradient(circle at 80% 28%,rgba(181,121,63,.15),transparent 48%);
+  pointer-events:none;
+}
+.place{
+  font-family:"Noto Serif TC","Noto Sans TC",serif;
+  font-weight:900;
+  letter-spacing:-.02em;
+}
+.meta{
+  font-size:15px;
+}
+.schedule{
+  grid-template-columns:62px 1fr 74px !important;
+}
+.schedule .icon{
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(145deg,#fff9ef,#f0dfcb);
+  box-shadow:0 10px 24px rgba(77,50,23,.08);
+}
+.schedule button{
+  margin-top:8px;
+}
+#spotList .list-item{
+  min-height:150px;
+}
+#spotList .list-item::before{
+  content:"";
+  position:absolute;
+  right:18px;
+  top:18px;
+  width:96px;
+  height:96px;
+  border-radius:22px;
+  background:
+    linear-gradient(135deg,rgba(255,253,248,.15),rgba(255,253,248,.55)),
+    url("https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=600&auto=format&fit=crop");
+  background-size:cover;
+  background-position:center;
+  opacity:.55;
+}
+#spotList .list-item h3,#spotList .list-item p,#spotList .list-item button{
+  position:relative;
+  z-index:1;
+}
+#allSchedule .list-item{
+  min-height:180px;
+}
+#allSchedule .list-item::before{
+  content:"";
+  position:absolute;
+  right:16px;
+  top:16px;
+  width:92px;
+  height:92px;
+  border-radius:22px;
+  background:
+    linear-gradient(135deg,rgba(255,253,248,.18),rgba(255,253,248,.48)),
+    url("https://images.unsplash.com/photo-1583417319070-4a69db38a482?q=80&w=600&auto=format&fit=crop");
+  background-size:cover;
+  background-position:center;
+  opacity:.48;
+}
+.map-preview{
+  position:relative;
+  height:235px;
+  margin:16px 0;
+  border-radius:28px;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  background:
+    linear-gradient(180deg,rgba(255,253,248,.08),rgba(255,253,248,.24)),
+    url("https://tile.openstreetmap.org/13/6500/3925.png");
+  background-size:cover;
+  background-position:center;
+}
+.map-preview::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(135deg,rgba(251,242,223,.16),rgba(251,242,223,.42)),
+    radial-gradient(circle at 35% 45%,rgba(129,85,47,.18),transparent 36%);
+}
+.map-pin{
+  position:absolute;
+  left:50%;
+  top:48%;
+  transform:translate(-50%,-50%);
+  z-index:1;
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  background:rgba(255,253,248,.92);
+  display:grid;
+  place-items:center;
+  font-size:30px;
+  box-shadow:0 12px 28px rgba(77,50,23,.18);
+}
+.map-label{
+  position:absolute;
+  left:18px;
+  bottom:18px;
+  z-index:1;
+  background:rgba(255,253,248,.92);
+  color:var(--brown);
+  padding:10px 14px;
+  border-radius:16px;
+  font-weight:900;
+  box-shadow:0 10px 24px rgba(77,50,23,.12);
+}
+.bottom-nav{
+  grid-template-columns:1fr 1fr 82px 1fr 1fr 1fr !important;
+  align-items:end;
+}
+.bottom-nav .home{
+  justify-self:center !important;
+  align-self:center !important;
+  width:78px !important;
+  height:78px !important;
+  margin:-34px auto 0 !important;
+  transform:translateX(0) !important;
+  position:relative;
+  left:0;
+}
+.bottom-nav button:not(.home){
+  align-self:center;
+}
+@media(max-width:430px){
+  .bottom-nav{
+    width:calc(100vw - 24px) !important;
+    grid-template-columns:1fr 1fr 80px 1fr 1fr 1fr !important;
+    padding:8px 8px !important;
+  }
+  .bottom-nav .home{
+    width:76px !important;
+    height:76px !important;
+    margin:-34px auto 0 !important;
+  }
+  .bottom-nav span{
+    font-size:12px;
+  }
+  .hero-bg{
+    right:-72px !important;
+    width:104% !important;
+    opacity:.40 !important;
+  }
+  .page-title h2{
+    font-size:34px !important;
+  }
+  .schedule{
+    grid-template-columns:56px 1fr 62px !important;
+  }
+}

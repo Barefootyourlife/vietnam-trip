@@ -194,4 +194,7 @@ function openFlightModal(){openModal("新增航班",`<input id="fNo" placeholder
 function openPackingModal(){openModal("新增行李",`<input id="pName" placeholder="物品"><button class="primary" onclick="data.packing.push({id:Date.now(),name:$('pName').value,done:false});closeModal();save()">新增</button>`)}
 function togglePack(id){const x=data.packing.find(i=>i.id===id);x.done=!x.done;save()}
 function remove(type,id){data[type]=data[type].filter(x=>x.id!==id);save()}
-function openMapSearch(){const q=$("mapSearch").value;if(q)window.open("https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q),"_blank")}
+function openMapSearch(){
+  const q=$("mapSearch").value;
+  if(q) window.open("https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q),"_blank");
+}
