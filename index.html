@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Travel Planner</title>
-  <link rel="stylesheet" href="style.css?v=polish3" />
+  <link rel="stylesheet" href="style.css?v=stable6" />
 </head>
 <body>
   <main class="app">
@@ -39,16 +39,16 @@
         <div id="todayList"></div>
       </section>
 
-      <section class="home-info-grid">
-        <button class="home-info-card" onclick="showPage('more', document.querySelector('.bottom-nav button:last-child'))">
-          <div class="info-img stay-img"></div>
+      <section class="home-preview">
+        <button onclick="showPage('more', document.querySelector('.bottom-nav button:nth-child(6)'))">
+          <div class="preview-photo hotel"></div>
           <div>
             <b>🏨 住宿資訊</b>
             <p id="homeStayPreview">尚未新增住宿</p>
           </div>
         </button>
-        <button class="home-info-card" onclick="showPage('more', document.querySelector('.bottom-nav button:last-child'))">
-          <div class="info-img flight-img"></div>
+        <button onclick="showPage('more', document.querySelector('.bottom-nav button:nth-child(6)'))">
+          <div class="preview-photo plane"></div>
           <div>
             <b>✈️ 航班資訊</b>
             <p id="homeFlightPreview">尚未新增航班</p>
@@ -75,13 +75,13 @@
 
     <section class="page" id="mapPage">
       <div class="page-title"><h2>地圖</h2></div>
-      <section class="card map-search-card">
+      <section class="card">
         <input id="mapSearch" placeholder="輸入地點，例如 胡志明市博物館" />
         <button class="primary" onclick="openMapSearch()">開啟 Google Maps</button>
       </section>
       <section class="map-preview">
         <div class="map-pin">📍</div>
-        <div class="map-label">行程地圖預覽</div>
+        <div class="map-text">地圖預覽</div>
       </section>
       <div id="mapPlaces"></div>
     </section>
@@ -122,12 +122,12 @@
   </main>
 
   <nav class="bottom-nav">
-    <button onclick="showPage('map', this)">⌖<span>地圖</span></button>
-    <button onclick="showPage('schedule', this)">▣<span>行程</span></button>
-    <button class="home active" onclick="showPage('home', this)">⌂<span>首頁</span></button>
-    <button onclick="showPage('budget', this)">▤<span>記帳</span></button>
-    <button onclick="showPage('spots', this)">♡<span>景點</span></button>
-    <button onclick="showPage('more', this)">⋯<span>更多</span></button>
+    <button onclick="showPage('map', this)"><span>地圖</span></button>
+    <button onclick="showPage('schedule', this)"><span>行程</span></button>
+    <button class="home active" onclick="showPage('home', this)"><span>首頁</span></button>
+    <button onclick="showPage('budget', this)"><span>記帳</span></button>
+    <button onclick="showPage('spots', this)"><span>景點</span></button>
+    <button onclick="showPage('more', this)"><span>更多</span></button>
   </nav>
 
   <dialog id="modal">
@@ -138,6 +138,6 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-  <script src="script.js?v=polish3"></script>
+  <script src="script.js?v=stable6"></script>
 </body>
 </html>
