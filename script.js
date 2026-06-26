@@ -56,6 +56,7 @@ function render(){
   $("dayTabs").innerHTML = days.map((d,i)=>{
     const f=fmtDate(d.date);
     return `<button class="day-card ${d.id===selectedDayId?'active':''}" onclick="selectDay(${d.id})">
+      <span class="day-edit" onclick="event.stopPropagation();openEditDay(${d.id})">✎</span>
       <div class="week">${f.week} <small>D${i+1}</small></div>
       <div class="num">${f.num}</div>
       <div class="month">${f.month}</div>
@@ -93,7 +94,16 @@ function moveDay(n){
   if(data.days[idx]) selectedDayId=data.days[idx].id;
   render();
 }
-function modalForm(title, html){$("modalTitle").textContent=title;$("modalBody").innerHTML=html;modal.showModal()}
+function modalForm(title, html){
+  $("modalTitle").textContent = title;
+  $("modalBody").innerHTML = html;
+  const m = $("modal");
+  if (m && typeof m.showModal === "function") {
+    m.showModal();
+  } else {
+    alert("請用 Safari / Chrome 開啟，或更新瀏覽器後再試一次");
+  }
+}
 function openSettings(){
   modalForm("旅程設定",`
     <div class="form">
@@ -102,7 +112,7 @@ function openSettings(){
       <button class="primary" onclick="saveSettings()">儲存</button>
     </div>`);
 }
-function saveSettings(){data.title=$("mTitle").value;data.subtitle=$("mSub").value;modal.close();save()}
+function saveSettings(){data.title=$("mTitle").value;data.subtitle=$("mSub").value;$("modal").close();save()}
 function openDayForm(){
   modalForm("新增日期",`
     <div class="form">
@@ -112,8 +122,40 @@ function openDayForm(){
     </div>`);
 }
 function addDay(){
-  const day={id:Date.now(),date:$("dDate").value,title:$("dTitle").value||`Day ${(data.days||[]).length+1}`,schedules:[]};
-  data.days.push(day); selectedDayId=day.id; modal.close(); save();
+  const date = $("dDate")?.value || "";
+  const title = $("dTitle")?.value || `Day ${(data.days||[]).length + 1}`;
+  const day = { id: Date.now(), date, title, schedules: [] };
+  if (!Array.isArray(data.days)) data.days = [];
+  data.days.push(day);
+  selectedDayId = day.id;
+  $("modal").close();
+  save();
+}
+function openEditDay(id){
+  const d = (data.days || []).find(x => x.id === id);
+  if(!d) return;
+  modalForm("修改日期",`
+    <div class="form">
+      <input id="editDayDate" type="date" value="${d.date || ""}">
+      <input id="editDayTitle" placeholder="日期標題，例如 Day 1｜胡志明" value="${d.title || ""}">
+      <button class="primary" onclick="saveEditDay(${id})">儲存修改</button>
+      <button class="primary danger" onclick="deleteDay(${id})">刪除日期</button>
+    </div>`);
+}
+function saveEditDay(id){
+  const d = (data.days || []).find(x => x.id === id);
+  if(!d) return;
+  d.date = $("editDayDate").value || "";
+  d.title = $("editDayTitle").value || d.title || "";
+  $("modal").close();
+  save();
+}
+function deleteDay(id){
+  if(!confirm("確定要刪除這個日期嗎？裡面的行程也會一起刪掉。")) return;
+  data.days = (data.days || []).filter(x => x.id !== id);
+  selectedDayId = data.days[0]?.id || null;
+  $("modal").close();
+  save();
 }
 function openScheduleForm(){
   if(!selectedDayId) return openDayForm();
@@ -130,7 +172,7 @@ function openScheduleForm(){
 function addSchedule(){
   const d=selectedDay(); if(!d) return;
   d.schedules.push({id:Date.now(),time:$("sTime").value,place:$("sPlace").value,location:$("sLocation").value,icon:$("sIcon").value,note:$("sNote").value});
-  modal.close(); save();
+  $("modal").close(); save();
 }
 function deleteSchedule(dayId,id){const d=data.days.find(x=>x.id===dayId);d.schedules=d.schedules.filter(s=>s.id!==id);save()}
 function openBudgetForm(){
@@ -141,7 +183,7 @@ function openBudgetForm(){
       <button class="primary" onclick="addBudget()">新增</button>
     </div>`);
 }
-function addBudget(){data.budget.push({id:Date.now(),item:$("bItem").value,amount:Number($("bAmount").value||0)});modal.close();save()}
+function addBudget(){data.budget.push({id:Date.now(),item:$("bItem").value,amount:Number($("bAmount").value||0)});$("modal").close();save()}
 function showPage(page, btn){
   document.querySelectorAll(".bottom-nav button").forEach(b=>b.classList.remove("active"));
   if(btn) btn.classList.add("active");
@@ -184,3 +226,12 @@ function remove(type,id){data[type]=data[type].filter(x=>x.id!==id);save();showP
 function openMap(){const q=$("mapQ")?.value||""; if(q) window.open("https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q),"_blank")}
 function shareSite(){navigator.share?navigator.share({title:data.title,url:location.href}):alert(location.href)}
 function exportPDF(){window.print()}
+
+
+document.addEventListener("click", function(e){
+  const addBtn = e.target.closest(".add-date");
+  if(addBtn){
+    e.preventDefault();
+    openDayForm();
+  }
+});

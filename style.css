@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;600;800&display=swap');
+@@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700;900&family=Noto+Sans+TC:wght@400;600;800&display=swap');
 
 :root{
   --bg:#fbf2df;
@@ -32,14 +32,41 @@ button{cursor:pointer}
 .app-shell:before{
   content:"";
   position:absolute;
-  right:50px; top:34px;
-  width:460px; height:180px;
-  background:linear-gradient(90deg,transparent,rgba(147,90,45,.14)), url("https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1200&auto=format&fit=crop");
+  right:18px;
+  top:28px;
+  width:min(56vw,520px);
+  height:190px;
+  background:
+    linear-gradient(90deg,
+      rgba(251,242,223,1) 0%,
+      rgba(251,242,223,.78) 28%,
+      rgba(251,242,223,.38) 62%,
+      rgba(251,242,223,.18) 100%
+    ),
+    linear-gradient(180deg,
+      rgba(251,242,223,.2) 0%,
+      rgba(251,242,223,.65) 100%
+    ),
+    url("https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1200&auto=format&fit=crop");
   background-size:cover;
   background-position:center;
-  opacity:.22;
-  filter:sepia(.5);
-  border-radius:0 0 30px 120px;
+  opacity:.26;
+  filter:sepia(.55) blur(2.5px);
+  border-radius:0 0 36px 150px;
+  -webkit-mask-image:
+    radial-gradient(ellipse at 62% 38%, #000 0%, #000 42%, rgba(0,0,0,.72) 58%, transparent 82%);
+  mask-image:
+    radial-gradient(ellipse at 62% 38%, #000 0%, #000 42%, rgba(0,0,0,.72) 58%, transparent 82%);
+  pointer-events:none;
+}
+.app-shell:after{
+  content:"";
+  position:absolute;
+  right:0;
+  top:18px;
+  width:min(62vw,560px);
+  height:220px;
+  background:radial-gradient(ellipse at center, rgba(251,242,223,0) 35%, rgba(251,242,223,.95) 82%);
   pointer-events:none;
 }
 .topbar{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;position:relative;z-index:1}
@@ -112,17 +139,49 @@ h1{font-family:"Noto Serif TC",serif;font-size:46px;line-height:1.05;margin:0;co
 .bar{height:12px;background:#eadfc7;border-radius:99px;overflow:hidden;margin-top:12px}
 .bar span{display:block;height:100%;width:56%;background:linear-gradient(90deg,#a56633,#d7954e)}
 .preview{color:var(--muted);line-height:1.8}
-.quick-actions{display:grid;grid-template-columns:repeat(7,1fr);gap:18px;margin:22px 0}
+.quick-actions{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin:20px 0 22px;
+}
 .quick-actions button{
-  min-height:92px;border:1px solid var(--line);border-radius:20px;background:rgba(255,253,248,.9);
-  color:var(--brown);box-shadow:var(--shadow);font-size:26px;font-weight:900;
+  min-height:96px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:rgba(255,253,248,.92);
+  color:var(--brown);
+  box-shadow:0 12px 32px rgba(77,50,23,.10);
+  font-size:28px;
+  font-weight:900;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
 }
-.quick-actions span{display:block;font-size:15px;margin-top:6px;color:var(--ink)}
+.quick-actions span{
+  display:block;
+  font-size:16px;
+  margin-top:8px;
+  color:var(--ink);
+  line-height:1.2;
+}
 .quick-actions .big-add{
-  transform:translateY(-12px);
-  border-radius:50%;height:116px;background:linear-gradient(145deg,#5d3d25,#9a6435);color:#fff;border:8px solid #fff6e8;
+  grid-row:span 2;
+  min-height:204px;
+  border-radius:28px;
+  background:linear-gradient(145deg,#5d3d25,#9a6435);
+  color:#fff;
+  border:0;
+  transform:none;
 }
-.quick-actions .big-add span{color:#fff}
+.quick-actions .big-add span{
+  color:#fff;
+  font-size:20px;
+}
+.quick-actions .big-add::first-line{
+  font-size:44px;
+}
 .bottom-nav{
   position:fixed;left:50%;bottom:16px;transform:translateX(-50%);
   width:min(1040px,calc(100vw - 26px));
@@ -158,11 +217,205 @@ textarea{min-height:88px;resize:vertical}
   .dashboard{grid-template-columns:1fr}
   .schedule-item{grid-template-columns:70px 1fr;gap:10px}
   .photo{display:none}
-  .quick-actions{grid-template-columns:repeat(4,1fr);gap:12px}
-  .quick-actions button{min-height:76px}
-  .quick-actions .big-add{height:94px}
+  .quick-actions{
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
+  .quick-actions button{
+    min-height:86px;
+    border-radius:18px;
+    font-size:24px;
+  }
+  .quick-actions span{
+    font-size:14px;
+  }
+  .quick-actions .big-add{
+    grid-column:span 1;
+    grid-row:span 2;
+    min-height:182px;
+    border-radius:24px;
+  }
 }
 @media print{
   .top-actions,.date-row-wrap,.progress-wrap,.quick-actions,.bottom-nav,.link,.edit-title{display:none!important}
   .dashboard{display:block}.card{box-shadow:none;margin:12px 0}
+}
+
+.add-date{
+  position:relative;
+  z-index:10;
+  pointer-events:auto;
+}
+.date-row-wrap{
+  position:relative;
+  z-index:3;
+}
+dialog button{
+  pointer-events:auto;
+}
+@media(max-width:820px){
+  .date-row-wrap{
+    grid-template-columns:42px minmax(0,1fr) 78px 42px;
+    overflow:visible;
+  }
+  .date-row{
+    max-width:100%;
+  }
+  .add-date{
+    min-width:78px;
+    font-size:30px;
+  }
+}
+
+/* v4.3 日期列修正：不凸出、不重疊、可編輯 */
+.date-row-wrap{
+  grid-template-columns:44px minmax(0,1fr) 82px 44px !important;
+  gap:10px !important;
+  overflow:hidden !important;
+}
+.date-row{
+  display:flex !important;
+  gap:10px !important;
+  overflow-x:auto !important;
+  padding:6px 2px 12px !important;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+}
+.day-card{
+  flex:0 0 92px !important;
+  width:92px !important;
+  min-width:92px !important;
+  height:116px !important;
+  border-radius:22px !important;
+  padding:10px 8px !important;
+  transform:none !important;
+  position:relative;
+  scroll-snap-align:center;
+}
+.day-card.active{
+  transform:none !important;
+}
+.day-card .num{
+  font-size:34px !important;
+  margin:8px 0 2px !important;
+}
+.day-card .week{
+  font-size:13px !important;
+}
+.day-card .month{
+  font-size:14px !important;
+}
+.day-edit{
+  position:absolute;
+  right:5px;
+  top:5px;
+  width:24px;
+  height:24px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.75);
+  color:var(--brown);
+  font-size:12px;
+  padding:0;
+  box-shadow:none;
+}
+.day-card.active .day-edit{
+  background:rgba(255,255,255,.22);
+  color:#fff;
+}
+.add-date{
+  height:116px !important;
+  min-width:82px !important;
+  border-radius:22px !important;
+  padding:8px !important;
+  font-size:28px !important;
+}
+.add-date small{
+  font-size:12px !important;
+}
+.progress-wrap{
+  grid-template-columns:1fr 90px !important;
+}
+@media(max-width:820px){
+  .date-row-wrap{
+    grid-template-columns:42px minmax(0,1fr) 78px 42px !important;
+    gap:8px !important;
+  }
+  .day-card{
+    flex-basis:86px !important;
+    width:86px !important;
+    min-width:86px !important;
+    height:108px !important;
+  }
+  .day-card .num{
+    font-size:31px !important;
+  }
+  .add-date{
+    height:108px !important;
+    min-width:78px !important;
+  }
+}
+
+
+/* v4.4：柔化首頁圖片邊界 */
+@media(max-width:820px){
+  .app-shell:before{
+    width:74vw !important;
+    height:150px !important;
+    right:-12px !important;
+    top:28px !important;
+    opacity:.20 !important;
+    filter:sepia(.55) blur(3.5px) !important;
+    border-radius:0 0 28px 120px !important;
+    -webkit-mask-image:radial-gradient(ellipse at 62% 42%, #000 0%, rgba(0,0,0,.66) 48%, transparent 78%) !important;
+    mask-image:radial-gradient(ellipse at 62% 42%, #000 0%, rgba(0,0,0,.66) 48%, transparent 78%) !important;
+  }
+  .app-shell:after{
+    width:80vw !important;
+    height:170px !important;
+    right:-18px !important;
+    top:18px !important;
+  }
+}
+
+/* v4.4：日期卡片不要凸出，手機寬度更穩 */
+.date-row-wrap{
+  grid-template-columns:44px minmax(0,1fr) 82px 44px !important;
+  gap:10px !important;
+  overflow:hidden !important;
+}
+.date-row{
+  gap:10px !important;
+  overflow-x:auto !important;
+  padding:6px 2px 12px !important;
+}
+.day-card{
+  flex:0 0 92px !important;
+  width:92px !important;
+  min-width:92px !important;
+  height:116px !important;
+  transform:none !important;
+}
+.day-card.active{
+  transform:none !important;
+}
+.add-date{
+  height:116px !important;
+  min-width:82px !important;
+}
+@media(max-width:820px){
+  .date-row-wrap{
+    grid-template-columns:42px minmax(0,1fr) 78px 42px !important;
+    gap:8px !important;
+  }
+  .day-card{
+    flex-basis:86px !important;
+    width:86px !important;
+    min-width:86px !important;
+    height:108px !important;
+  }
+  .add-date{
+    height:108px !important;
+    min-width:78px !important;
+  }
 }
