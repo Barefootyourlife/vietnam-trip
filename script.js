@@ -32,6 +32,7 @@ ref.on("value",snap=>{
   }
   if(!selectedDayId) selectedDayId=data.days[0].id;
   render();
+  setTimeout(refreshIcons, 50);
 });
 function save(){ref.set(data)}
 function closeModal(){$("modal").close()}
@@ -52,6 +53,7 @@ function showPage(name,btn){
   document.querySelectorAll(".bottom-nav button").forEach(b=>b.classList.remove("active"));
   if(btn) btn.classList.add("active");
   render();
+  setTimeout(refreshIcons, 50);
 }
 
 function render(){
@@ -203,4 +205,9 @@ function renderHomeInfo(){
 }
 
 
-setTimeout(()=>{ if(window.lucide){ lucide.createIcons(); } },300);
+function refreshIcons(){
+  if(window.lucide){
+    lucide.createIcons();
+  }
+}
+setTimeout(refreshIcons, 300);

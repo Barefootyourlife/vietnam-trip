@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Travel Planner</title>
-  <link rel="stylesheet" href="style.css?v=8" />
-
+  <link rel="stylesheet" href="style.css?v=9" />
 <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
@@ -124,13 +123,27 @@
     </section>
   </main>
 
-  
-<nav class="bottom-nav">
-<button onclick="showPage('map', this)"><i data-lucide="map-pin"></i><span>地圖</span></button>
-<button onclick="showPage('schedule', this)"><i data-lucide="calendar-days"></i><span>行程</span></button>
-<button class="home active" onclick="showPage('home', this)"><i data-lucide="house"></i><span>首頁</span></button>
-<button onclick="showPage('budget', this)"><i data-lucide="wallet"></i><span>記帳</span></button>
-<button onclick="showPage('spots', this)"><i data-lucide="heart"></i><span>景點</span></button>
+  <nav class="bottom-nav">
+  <button onclick="showPage('map', this)" aria-label="地圖">
+    <i data-lucide="map-pin"></i>
+    <span>地圖</span>
+  </button>
+  <button onclick="showPage('schedule', this)" aria-label="行程">
+    <i data-lucide="calendar-days"></i>
+    <span>行程</span>
+  </button>
+  <button class="home active" onclick="showPage('home', this)" aria-label="首頁">
+    <i data-lucide="house"></i>
+    <span>首頁</span>
+  </button>
+  <button onclick="showPage('budget', this)" aria-label="記帳">
+    <i data-lucide="wallet"></i>
+    <span>記帳</span>
+  </button>
+  <button onclick="showPage('spots', this)" aria-label="景點">
+    <i data-lucide="heart"></i>
+    <span>景點</span>
+  </button>
 </nav>
 
   <dialog id="modal">
@@ -141,6 +154,6 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-  <script src="script.js?v=8"></script>
+  <script src="script.js?v=9"></script>
 </body>
 </html>
