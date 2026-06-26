@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Travel Planner</title>
-  <link rel="stylesheet" href="style.css?v=polish2" />
+  <link rel="stylesheet" href="style.css?v=polish3" />
 </head>
 <body>
   <main class="app">
@@ -37,6 +37,23 @@
           <button onclick="openScheduleModal()">＋新增行程</button>
         </div>
         <div id="todayList"></div>
+      </section>
+
+      <section class="home-info-grid">
+        <button class="home-info-card" onclick="showPage('more', document.querySelector('.bottom-nav button:last-child'))">
+          <div class="info-img stay-img"></div>
+          <div>
+            <b>🏨 住宿資訊</b>
+            <p id="homeStayPreview">尚未新增住宿</p>
+          </div>
+        </button>
+        <button class="home-info-card" onclick="showPage('more', document.querySelector('.bottom-nav button:last-child'))">
+          <div class="info-img flight-img"></div>
+          <div>
+            <b>✈️ 航班資訊</b>
+            <p id="homeFlightPreview">尚未新增航班</p>
+          </div>
+        </button>
       </section>
 
       <section class="tip-card">
@@ -121,6 +138,6 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-  <script src="script.js?v=polish2"></script>
+  <script src="script.js?v=polish3"></script>
 </body>
 </html>

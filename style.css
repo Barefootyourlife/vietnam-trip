@@ -571,3 +571,148 @@ h1,h2,.page-title h2,.card-title h2{
     grid-template-columns:56px 1fr 62px !important;
   }
 }
+
+
+/* polished v3 */
+.home-info-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+  margin:16px 0;
+}
+.home-info-card{
+  display:grid;
+  grid-template-columns:96px 1fr;
+  gap:14px;
+  align-items:center;
+  text-align:left;
+  width:100%;
+  padding:14px;
+  border-radius:24px;
+  border:1px solid var(--line);
+  background:rgba(255,253,248,.92);
+  box-shadow:var(--shadow);
+  color:var(--ink);
+}
+.home-info-card b{
+  font-family:"Noto Serif TC","Noto Sans TC",serif;
+  font-size:22px;
+}
+.home-info-card p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:15px;
+}
+.info-img{
+  width:96px;
+  height:76px;
+  border-radius:18px;
+  background-size:cover;
+  background-position:center;
+  box-shadow:0 10px 26px rgba(77,50,23,.10);
+}
+.stay-img{
+  background-image:linear-gradient(135deg,rgba(255,253,248,.10),rgba(255,253,248,.18)),url("https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=600&auto=format&fit=crop");
+}
+.flight-img{
+  background-image:linear-gradient(135deg,rgba(255,253,248,.08),rgba(255,253,248,.16)),url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=600&auto=format&fit=crop");
+}
+
+/* 讓景點/行程圖不要太淡，且不壓住按鈕 */
+#spotList .list-item::before{
+  opacity:.95 !important;
+  right:16px !important;
+  top:16px !important;
+  width:108px !important;
+  height:108px !important;
+  z-index:0;
+}
+#spotList .list-item{
+  padding-right:138px !important;
+}
+#allSchedule .list-item::before{
+  opacity:.78 !important;
+  right:16px !important;
+  top:20px !important;
+  width:94px !important;
+  height:94px !important;
+  z-index:0;
+}
+#allSchedule .list-item{
+  padding-right:126px !important;
+}
+#allSchedule .list-item .list-row,
+#allSchedule .list-item .schedule,
+#spotList .list-item h3,
+#spotList .list-item p,
+#spotList .list-item button{
+  position:relative;
+  z-index:2;
+}
+.schedule{
+  grid-template-columns:62px 1fr 58px !important;
+}
+.schedule button{
+  opacity:1 !important;
+  background:#e9d3b9 !important;
+  color:#6a4328 !important;
+  font-weight:900;
+}
+.schedule .icon{
+  opacity:1 !important;
+  background:#fff6e8 !important;
+}
+
+/* 地圖預覽改成比較像地圖的 SVG 背景，不用外部圖磚也能顯示 */
+.map-preview{
+  background:
+    linear-gradient(135deg,rgba(255,253,248,.10),rgba(255,253,248,.24)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='520' viewBox='0 0 900 520'%3E%3Crect width='900' height='520' fill='%23dcebdc'/%3E%3Cpath d='M0 120 C160 150 200 30 380 76 S620 210 900 140' fill='none' stroke='%2397c9dc' stroke-width='34' opacity='.75'/%3E%3Cpath d='M80 0 L120 520 M240 0 L220 520 M420 0 L480 520 M700 0 L650 520 M0 260 L900 220 M0 390 L900 450' stroke='%23ffffff' stroke-width='18' opacity='.85'/%3E%3Cpath d='M0 260 L900 220 M0 390 L900 450 M80 0 L120 520 M420 0 L480 520' stroke='%23c8c2ad' stroke-width='4' opacity='.45'/%3E%3Ccircle cx='430' cy='250' r='22' fill='%23a56534'/%3E%3Ccircle cx='430' cy='250' r='70' fill='%23a56534' opacity='.12'/%3E%3C/svg%3E") !important;
+  background-size:cover !important;
+  background-position:center !important;
+}
+.map-preview::after{
+  background:linear-gradient(135deg,rgba(251,242,223,.05),rgba(251,242,223,.20)) !important;
+}
+
+/* 底部圖標修正：用 emoji，比較可愛清楚 */
+.bottom-nav button{
+  font-size:0 !important;
+}
+.bottom-nav button span{
+  font-size:12px !important;
+}
+.bottom-nav button::before{
+  display:block;
+  font-size:24px;
+  line-height:1;
+  margin-bottom:4px;
+}
+.bottom-nav button:nth-child(1)::before{content:"📍";}
+.bottom-nav button:nth-child(2)::before{content:"📅";}
+.bottom-nav button:nth-child(3)::before{content:"🏠";}
+.bottom-nav button:nth-child(4)::before{content:"👛";}
+.bottom-nav button:nth-child(5)::before{content:"❤️";}
+.bottom-nav button:nth-child(6)::before{content:"⋯";font-size:28px;}
+.bottom-nav .home{
+  position:absolute !important;
+  left:50% !important;
+  top:-32px !important;
+  transform:translateX(-50%) !important;
+  margin:0 !important;
+  z-index:3;
+}
+.bottom-nav{
+  grid-template-columns:1fr 1fr 92px 1fr 1fr 1fr !important;
+}
+.bottom-nav button:nth-child(3){
+  grid-column:3;
+}
+@media(max-width:430px){
+  #spotList .list-item{padding-right:124px !important;}
+  #allSchedule .list-item{padding-right:112px !important;}
+  .bottom-nav .home{
+    left:50% !important;
+    transform:translateX(-50%) !important;
+  }
+}

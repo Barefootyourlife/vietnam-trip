@@ -63,7 +63,7 @@ function render(){
   renderBudget();
   renderSpots();
   renderMore();
-  renderMapPlaces();
+  renderMapPlaces(); renderHomeInfo();
 }
 function renderDays(){
   const total=Math.max(data.days.length,1), idx=currentIndex();
@@ -197,4 +197,10 @@ function remove(type,id){data[type]=data[type].filter(x=>x.id!==id);save()}
 function openMapSearch(){
   const q=$("mapSearch").value;
   if(q) window.open("https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q),"_blank");
+}
+function renderHomeInfo(){
+  const stay = (data.stay||[])[0];
+  const flight = (data.flight||[])[0];
+  if($("homeStayPreview")) $("homeStayPreview").textContent = stay ? `${stay.name||"住宿"}｜${stay.date||""}` : "尚未新增住宿";
+  if($("homeFlightPreview")) $("homeFlightPreview").textContent = flight ? `${flight.no||"航班"}｜${flight.time||""}` : "尚未新增航班";
 }
