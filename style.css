@@ -883,3 +883,198 @@ dialog .primary,.close{
     padding-left:30px !important;
   }
 }
+
+
+/* =========================
+   V10 修正：景點圖片、行李勾選、底部五項對齊
+   ========================= */
+
+/* 1 景點圖片固定在卡片右側，不往上跑 */
+#spotList .list-item{
+  position:relative !important;
+  min-height:150px !important;
+  padding:22px 142px 22px 22px !important;
+  overflow:hidden !important;
+}
+
+#spotList .list-item::before{
+  content:"" !important;
+  position:absolute !important;
+  right:18px !important;
+  top:50% !important;
+  transform:translateY(-50%) !important;
+  width:104px !important;
+  height:104px !important;
+  border-radius:24px !important;
+  background:
+    linear-gradient(135deg,rgba(255,253,248,.08),rgba(255,253,248,.18)),
+    url("https://images.unsplash.com/photo-1583417319070-4a69db38a482?q=80&w=700&auto=format&fit=crop") !important;
+  background-size:cover !important;
+  background-position:center !important;
+  opacity:.96 !important;
+  z-index:0 !important;
+}
+
+#spotList .list-item::after{
+  display:none !important;
+}
+
+#spotList .list-item h3,
+#spotList .list-item p,
+#spotList .list-item button{
+  position:relative !important;
+  z-index:1 !important;
+}
+
+/* 2 行李清單：文字放在勾選框旁邊 */
+#packingList .list-item label{
+  display:flex !important;
+  align-items:center !important;
+  gap:12px !important;
+  font-size:20px !important;
+  font-weight:800 !important;
+  line-height:1.3 !important;
+  margin-bottom:12px !important;
+}
+
+#packingList .list-item input[type="checkbox"]{
+  width:28px !important;
+  height:28px !important;
+  margin:0 !important;
+  flex:0 0 auto !important;
+  accent-color:#8b5b34 !important;
+}
+
+#packingList .list-item{
+  padding:20px !important;
+}
+
+/* 3 底部導覽：五個項目平均、整齊、首頁正中間 */
+.bottom-nav{
+  position:fixed !important;
+  left:50% !important;
+  bottom:14px !important;
+  transform:translateX(-50%) !important;
+  width:min(700px, calc(100vw - 24px)) !important;
+  height:88px !important;
+  display:grid !important;
+  grid-template-columns:1fr 1fr 92px 1fr 1fr !important;
+  align-items:center !important;
+  justify-items:center !important;
+  gap:0 !important;
+  padding:8px 10px !important;
+  border-radius:30px !important;
+  overflow:visible !important;
+  z-index:999 !important;
+}
+
+.bottom-nav button{
+  position:relative !important;
+  width:100% !important;
+  height:64px !important;
+  margin:0 !important;
+  padding:8px 0 !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:6px !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  border:0 !important;
+  color:var(--muted) !important;
+  font-size:0 !important;
+}
+
+.bottom-nav button:nth-child(1){ grid-column:1 !important; }
+.bottom-nav button:nth-child(2){ grid-column:2 !important; padding-right:0 !important; margin-right:0 !important; }
+.bottom-nav button:nth-child(3){ grid-column:3 !important; }
+.bottom-nav button:nth-child(4){ grid-column:4 !important; padding-left:0 !important; margin-left:0 !important; }
+.bottom-nav button:nth-child(5){ grid-column:5 !important; }
+
+.bottom-nav button::before,
+.bottom-nav button::after,
+.bottom-nav .home::before,
+.bottom-nav .home::after{
+  display:none !important;
+  content:none !important;
+}
+
+.bottom-nav svg{
+  width:25px !important;
+  height:25px !important;
+  stroke-width:2 !important;
+  display:block !important;
+  color:currentColor !important;
+}
+
+.bottom-nav span{
+  font-size:12px !important;
+  line-height:1 !important;
+  color:currentColor !important;
+}
+
+.bottom-nav button.active:not(.home){
+  background:#f5ead9 !important;
+  color:var(--brown) !important;
+  border-radius:18px !important;
+}
+
+.bottom-nav .home{
+  grid-column:3 !important;
+  position:relative !important;
+  left:auto !important;
+  top:auto !important;
+  transform:translateY(-28px) !important;
+  width:82px !important;
+  height:82px !important;
+  margin:0 auto !important;
+  border-radius:50% !important;
+  background:linear-gradient(145deg,#6a4328,#a56d3d) !important;
+  color:#fff !important;
+  border:6px solid #fff6e8 !important;
+  box-shadow:0 14px 32px rgba(77,50,23,.25) !important;
+  z-index:1000 !important;
+}
+
+.bottom-nav .home svg{
+  width:30px !important;
+  height:30px !important;
+  color:#fff !important;
+}
+
+.bottom-nav .home span{
+  color:#fff !important;
+  font-size:13px !important;
+}
+
+/* 內容不被底部蓋住 */
+.app{
+  padding-bottom:205px !important;
+}
+
+/* 手機版 */
+@media(max-width:430px){
+  #spotList .list-item{
+    padding-right:126px !important;
+  }
+
+  #spotList .list-item::before{
+    width:96px !important;
+    height:96px !important;
+    right:16px !important;
+  }
+
+  .bottom-nav{
+    width:calc(100vw - 22px) !important;
+    height:86px !important;
+    grid-template-columns:1fr 1fr 88px 1fr 1fr !important;
+    padding:8px 8px !important;
+  }
+
+  .bottom-nav .home{
+    width:78px !important;
+    height:78px !important;
+    transform:translateY(-27px) !important;
+  }
+}
