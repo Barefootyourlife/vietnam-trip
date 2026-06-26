@@ -3,125 +3,88 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Travel Planner V3</title>
+  <title>Travel Planner</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app">
-    <header class="hero">
-      <button class="ghost" onclick="openSettings()">⚙️</button>
+  <div class="app-shell">
+    <header class="topbar">
       <div>
-        <p class="eyebrow">Travel Planner V3 ☁️</p>
-        <h1 id="tripTitle">胡志明 & 富國島</h1>
-        <p id="tripSubtitle">多人共用・雲端同步・旅行小宇宙</p>
+        <p class="kicker" id="tripSubtitle">Buon Viaggio · Vietnam Trip</p>
+        <h1><span id="tripTitle">胡志明 & 富國島</span> <button class="edit-title" onclick="openSettings()">✎</button></h1>
+        <p class="date-range" id="rangeText">旅行日期・雲端同步</p>
+      </div>
+      <div class="top-actions">
+        <button onclick="shareSite()">分享</button>
+        <button onclick="openSettings()">設定</button>
       </div>
     </header>
 
-    <nav class="tabs">
-      <button class="tab active" onclick="showTab('itinerary')">📅 行程</button>
-      <button class="tab" onclick="showTab('map')">🗺️ 地圖</button>
-      <button class="tab" onclick="showTab('budget')">💰 記帳</button>
-      <button class="tab" onclick="showTab('spots')">📍 景點</button>
-      <button class="tab" onclick="showTab('stay')">🏨 住宿</button>
-      <button class="tab" onclick="showTab('flight')">✈️ 航班</button>
-      <button class="tab" onclick="showTab('packing')">🧳 行李</button>
-      <button class="tab" onclick="exportPDF()">📤 PDF</button>
-    </nav>
+    <section class="date-row-wrap">
+      <button class="arrow" onclick="moveDay(-1)">‹</button>
+      <div id="dayTabs" class="date-row"></div>
+      <button class="add-date" onclick="openDayForm()">＋<small>新增日期</small></button>
+      <button class="arrow" onclick="moveDay(1)">›</button>
+    </section>
 
-    <main>
-      <section id="itinerary" class="panel active">
-        <h2>每日行程</h2>
+    <div class="progress-wrap">
+      <div class="progress"><div id="progressBar"></div></div>
+      <p id="dayCount">Day 1 / 1</p>
+    </div>
 
-        <div class="form day-form">
-          <input id="newDayDate" type="date" />
-          <input id="newDayTitle" placeholder="日期標題，例如 Day 1｜胡志明市" />
-          <button onclick="addDay()">新增日期</button>
+    <main class="dashboard">
+      <section class="card itinerary-card">
+        <div class="card-head">
+          <h2>🗓️ 今日行程</h2>
+          <button class="link" onclick="openScheduleForm()">＋新增</button>
         </div>
-
-        <div id="dayTabs" class="day-tabs"></div>
-
-        <div class="form">
-          <input id="timeInput" placeholder="時間 例如 09:00" />
-          <input id="placeInput" placeholder="地點 / 行程" />
-          <textarea id="noteInput" placeholder="交通、備註、訂位資訊"></textarea>
-          <button onclick="addScheduleToSelectedDay()">新增到這一天</button>
-        </div>
-        <div id="itineraryList" class="list"></div>
+        <div id="todayList"></div>
       </section>
 
-      <section id="map" class="panel">
-        <h2>地圖導航</h2>
-        <div class="form">
-          <input id="mapName" placeholder="景點名稱，例如 濱城市場" />
-          <button onclick="openMap()">開啟 Google Maps</button>
-        </div>
-      </section>
+      <aside class="side-grid">
+        <section class="card">
+          <div class="card-head"><h2>💰 總花費</h2><button class="link" onclick="openBudgetForm()">記帳</button></div>
+          <div class="money" id="totalAmount">0</div>
+          <p class="muted">已同步到 Firebase</p>
+          <div class="bar"><span id="budgetBar"></span></div>
+        </section>
 
-      <section id="budget" class="panel">
-        <h2>旅費記帳</h2>
-        <div class="total">總花費：<span id="totalAmount">0</span></div>
-        <div class="form">
-          <input id="budgetItem" placeholder="項目，例如 Grab / 河粉" />
-          <input id="budgetAmount" type="number" placeholder="金額" />
-          <button onclick="addBudget()">新增花費</button>
-        </div>
-        <div id="budgetList" class="list"></div>
-      </section>
+        <section class="card mini">
+          <div class="card-head"><h2>🏨 住宿資訊</h2><button class="link" onclick="showPage('stay')">查看</button></div>
+          <div id="stayPreview" class="preview"></div>
+        </section>
 
-      <section id="spots" class="panel">
-        <h2>景點收藏</h2>
-        <div class="form">
-          <input id="spotName" placeholder="景點名稱" />
-          <textarea id="spotNote" placeholder="想去原因 / 門票 / 開放時間"></textarea>
-          <button onclick="addItem('spots')">收藏景點</button>
-        </div>
-        <div id="spotsList" class="list"></div>
-      </section>
-
-      <section id="stay" class="panel">
-        <h2>住宿資訊</h2>
-        <div class="form">
-          <input id="stayName" placeholder="飯店名稱" />
-          <input id="stayDate" placeholder="入住日期" />
-          <textarea id="stayNote" placeholder="地址、電話、訂房編號"></textarea>
-          <button onclick="addItem('stay')">新增住宿</button>
-        </div>
-        <div id="stayList" class="list"></div>
-      </section>
-
-      <section id="flight" class="panel">
-        <h2>航班資訊</h2>
-        <div class="form">
-          <input id="flightNo" placeholder="航班，例如 VJ841" />
-          <input id="flightTime" placeholder="時間，例如 06:25-08:55" />
-          <textarea id="flightNote" placeholder="機場、航廈、行李資訊"></textarea>
-          <button onclick="addItem('flight')">新增航班</button>
-        </div>
-        <div id="flightList" class="list"></div>
-      </section>
-
-      <section id="packing" class="panel">
-        <h2>行李清單</h2>
-        <div class="form">
-          <input id="packItem" placeholder="物品，例如 護照 / 防曬 / 泳衣" />
-          <button onclick="addPacking()">新增物品</button>
-        </div>
-        <div id="packingList" class="list"></div>
-      </section>
+        <section class="card mini">
+          <div class="card-head"><h2>✈️ 航班資訊</h2><button class="link" onclick="showPage('flight')">查看</button></div>
+          <div id="flightPreview" class="preview"></div>
+        </section>
+      </aside>
     </main>
+
+    <section class="quick-actions">
+      <button onclick="showPage('map')">📍<span>地圖</span></button>
+      <button onclick="showPage('spots')">❤<span>景點收藏</span></button>
+      <button onclick="showPage('budget')">👛<span>記帳本</span></button>
+      <button class="big-add" onclick="openScheduleForm()">＋<span>新增行程</span></button>
+      <button onclick="showPage('packing')">🧳<span>行李清單</span></button>
+      <button onclick="showPage('album')">📷<span>相簿</span></button>
+      <button onclick="exportPDF()">📄<span>匯出PDF</span></button>
+    </section>
+
+    <nav class="bottom-nav">
+      <button class="active" onclick="showPage('home', this)">⌂<span>首頁</span></button>
+      <button onclick="showPage('allSchedule', this)">▣<span>行程</span></button>
+      <button onclick="showPage('map', this)">◇<span>地圖</span></button>
+      <button onclick="showPage('budget', this)">▤<span>記帳</span></button>
+      <button onclick="showPage('spots', this)">♡<span>景點</span></button>
+      <button onclick="showPage('more', this)">⋯<span>更多</span></button>
+    </nav>
   </div>
 
-  <dialog id="settings">
-    <h2>旅程設定</h2>
-    <input id="setTitle" placeholder="主標題" />
-    <input id="setSubtitle" placeholder="副標題" />
-    <select id="setTheme">
-      <option value="cream">奶油風</option>
-      <option value="ocean">海島風</option>
-      <option value="rose">玫瑰風</option>
-    </select>
-    <button onclick="saveSettings()">儲存</button>
-    <button class="secondary" onclick="closeSettings()">關閉</button>
+  <dialog id="modal">
+    <h2 id="modalTitle"></h2>
+    <div id="modalBody"></div>
+    <button class="primary" onclick="modal.close()">關閉</button>
   </dialog>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>

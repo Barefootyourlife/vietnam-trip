@@ -8,200 +8,179 @@ const firebaseConfig = {
   appId: "1:318044615830:web:11cb97e5d01d30d0213eb7",
   measurementId: "G-Y20QN0VQ7K"
 };
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 const tripRef = db.ref("sharedTrip");
 
+const $ = id => document.getElementById(id);
 let selectedDayId = null;
-
 let data = {
-  title: "胡志明 & 富國島",
-  subtitle: "多人共用・雲端同步・旅行小宇宙",
-  theme: "cream",
-  days: [
-    {id: 1, title: "Day 1｜胡志明市", date: "", schedules: []},
-    {id: 2, title: "Day 2｜胡志明市", date: "", schedules: []},
-    {id: 3, title: "Day 3｜富國島", date: "", schedules: []}
+  title:"胡志明 & 富國島",
+  subtitle:"Buon Viaggio · Vietnam Trip",
+  days:[
+    {id:1,date:"2026-06-26",title:"Day 1",schedules:[]},
+    {id:2,date:"2026-06-27",title:"Day 2",schedules:[]},
+    {id:3,date:"2026-06-28",title:"Day 3",schedules:[]}
   ],
-  itinerary: [],
-  budget: [],
-  spots: [],
-  stay: [],
-  flight: [],
-  packing: []
+  budget:[],
+  spots:[],
+  stay:[],
+  flight:[],
+  packing:[],
+  album:[]
 };
 
-tripRef.on("value", snap => {
-  if (snap.exists()) data = {...data, ...snap.val()};
-
-  // 舊版資料轉成新版日期卡
-  if ((!data.days || !data.days.length) && data.itinerary && data.itinerary.length) {
-    const grouped = {};
-    data.itinerary.forEach(item => {
-      const day = item.vals?.[0] || "未分類日期";
-      if (!grouped[day]) grouped[day] = [];
-      grouped[day].push({id:item.id, time:item.vals?.[1]||"", place:item.vals?.[2]||"", note:item.vals?.[3]||""});
-    });
-    data.days = Object.keys(grouped).map((title, idx)=>({id:Date.now()+idx, title, date:"", schedules:grouped[title]}));
-  }
-
-  if (!data.days) data.days = [];
-  if (!selectedDayId && data.days.length) selectedDayId = data.days[0].id;
+tripRef.on("value", snap=>{
+  if(snap.exists()) data = {...data, ...snap.val()};
+  if(!data.days) data.days=[];
+  if(!selectedDayId && data.days.length) selectedDayId=data.days[0].id;
   render();
 });
-
-function save(){ tripRef.set(data); }
-
-function showTab(id){
-  document.querySelectorAll(".panel,.tab").forEach(el=>el.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  event.target.classList.add("active");
+function save(){tripRef.set(data)}
+function fmtDate(d){
+  if(!d) return {week:"DAY",num:"+",month:"日期"};
+  const date = new Date(d+"T00:00:00");
+  const weeks=["SUN","MON","TUE","WED","THU","FRI","SAT"];
+  return {week:weeks[date.getDay()], num:String(date.getDate()).padStart(2,"0"), month:String(date.getMonth()+1).padStart(2,"0")+"月"};
 }
+function selectedIndex(){return Math.max(0,data.days.findIndex(d=>d.id===selectedDayId))}
+function selectedDay(){return data.days.find(d=>d.id===selectedDayId)}
+function render(){
+  $("tripTitle").textContent=data.title||"我的旅行";
+  $("tripSubtitle").textContent=data.subtitle||"Buon Viaggio";
+  const days=data.days||[];
+  const first=days[0]?.date||"";
+  const last=days[days.length-1]?.date||"";
+  $("rangeText").textContent = first && last ? `${first} - ${last}` : "旅行日期・雲端同步";
 
-function openSettings(){
-  document.getElementById("setTitle").value = data.title || "";
-  document.getElementById("setSubtitle").value = data.subtitle || "";
-  document.getElementById("setTheme").value = data.theme || "cream";
-  document.getElementById("settings").showModal();
-}
-function closeSettings(){ document.getElementById("settings").close(); }
-function saveSettings(){
-  data.title = document.getElementById("setTitle").value || "我的旅行";
-  data.subtitle = document.getElementById("setSubtitle").value || "";
-  data.theme = document.getElementById("setTheme").value || "cream";
-  closeSettings(); save();
-}
+  $("dayTabs").innerHTML = days.map((d,i)=>{
+    const f=fmtDate(d.date);
+    return `<button class="day-card ${d.id===selectedDayId?'active':''}" onclick="selectDay(${d.id})">
+      <div class="week">${f.week} <small>D${i+1}</small></div>
+      <div class="num">${f.num}</div>
+      <div class="month">${f.month}</div>
+    </button>`;
+  }).join("");
 
-function addDay(){
-  const date = document.getElementById("newDayDate").value;
-  const title = document.getElementById("newDayTitle").value.trim() || `Day ${data.days.length + 1}`;
-  const day = {id: Date.now(), title, date, schedules: []};
-  data.days.push(day);
-  selectedDayId = day.id;
-  document.getElementById("newDayDate").value = "";
-  document.getElementById("newDayTitle").value = "";
-  save();
-}
+  const idx=selectedIndex(), total=Math.max(days.length,1);
+  $("dayCount").textContent=`Day ${idx+1} / ${total}`;
+  $("progressBar").style.width=((idx+1)/total*100)+"%";
 
-function selectDay(id){
-  selectedDayId = id;
+  const day=selectedDay();
+  const schedules=day?.schedules||[];
+  $("todayList").innerHTML = schedules.length ? schedules.map(s=>`
+    <div class="schedule-item">
+      <div class="time">${s.time||"--:--"}</div>
+      <div>
+        <div class="place">${s.place||"未命名行程"}</div>
+        <div class="meta">📍 ${s.location||"未設定地點"}</div>
+        <div class="meta">${s.note||""}</div>
+        <button class="link danger" onclick="deleteSchedule(${day.id},${s.id})">刪除</button>
+      </div>
+      <div class="photo">${s.icon||"🏛️"}</div>
+    </div>`).join("") : `<p class="muted">今天還沒有行程，點「＋新增」開始塞進旅行寶石吧。</p>`;
+
+  const totalMoney=(data.budget||[]).reduce((s,x)=>s+Number(x.amount||0),0);
+  $("totalAmount").textContent=totalMoney.toLocaleString();
+  $("budgetBar").style.width=Math.min(100,totalMoney/30000*100)+"%";
+
+  $("stayPreview").innerHTML=(data.stay||[]).slice(0,2).map(x=>`<b>${x.name}</b><br><span>${x.date||""}</span>`).join("<hr>")||"尚未新增住宿";
+  $("flightPreview").innerHTML=(data.flight||[]).slice(0,2).map(x=>`<b>${x.no}</b><br><span>${x.time||""}</span>`).join("<hr>")||"尚未新增航班";
+}
+function selectDay(id){selectedDayId=id;render()}
+function moveDay(n){
+  const idx=selectedIndex()+n;
+  if(data.days[idx]) selectedDayId=data.days[idx].id;
   render();
 }
-
-function removeDay(id){
-  if(!confirm("確定要刪除這一天嗎？")) return;
-  data.days = data.days.filter(d=>d.id!==id);
-  selectedDayId = data.days[0]?.id || null;
-  save();
+function modalForm(title, html){$("modalTitle").textContent=title;$("modalBody").innerHTML=html;modal.showModal()}
+function openSettings(){
+  modalForm("旅程設定",`
+    <div class="form">
+      <input id="mTitle" value="${data.title||""}" placeholder="主標題">
+      <input id="mSub" value="${data.subtitle||""}" placeholder="副標題">
+      <button class="primary" onclick="saveSettings()">儲存</button>
+    </div>`);
 }
-
-function addScheduleToSelectedDay(){
-  if(!selectedDayId) return alert("請先新增一個日期");
-  const day = data.days.find(d=>d.id===selectedDayId);
-  const time = timeInput.value.trim();
-  const place = placeInput.value.trim();
-  const note = noteInput.value.trim();
-  if(!time && !place && !note) return alert("請先輸入行程");
-  day.schedules.push({id:Date.now(), time, place, note});
-  timeInput.value=""; placeInput.value=""; noteInput.value="";
-  save();
+function saveSettings(){data.title=$("mTitle").value;data.subtitle=$("mSub").value;modal.close();save()}
+function openDayForm(){
+  modalForm("新增日期",`
+    <div class="form">
+      <input id="dDate" type="date">
+      <input id="dTitle" placeholder="例如 Day 4｜富國島">
+      <button class="primary" onclick="addDay()">新增</button>
+    </div>`);
 }
-
-function removeSchedule(dayId, scheduleId){
-  const day = data.days.find(d=>d.id===dayId);
-  if(day){ day.schedules = day.schedules.filter(s=>s.id!==scheduleId); save(); }
+function addDay(){
+  const day={id:Date.now(),date:$("dDate").value,title:$("dTitle").value||`Day ${(data.days||[]).length+1}`,schedules:[]};
+  data.days.push(day); selectedDayId=day.id; modal.close(); save();
 }
-
-function addItem(type){
-  const map = {
-    spots:["spotName","spotNote"],
-    stay:["stayName","stayDate","stayNote"],
-    flight:["flightNo","flightTime","flightNote"]
+function openScheduleForm(){
+  if(!selectedDayId) return openDayForm();
+  modalForm("新增今日行程",`
+    <div class="form">
+      <input id="sTime" placeholder="時間，例如 08:00">
+      <input id="sPlace" placeholder="行程，例如 米蘭 → 威尼斯">
+      <input id="sLocation" placeholder="地點，例如 威尼斯">
+      <input id="sIcon" placeholder="圖示，例如 🏛️ 🍝 🚕">
+      <textarea id="sNote" placeholder="交通、備註、推薦餐廳"></textarea>
+      <button class="primary" onclick="addSchedule()">新增</button>
+    </div>`);
+}
+function addSchedule(){
+  const d=selectedDay(); if(!d) return;
+  d.schedules.push({id:Date.now(),time:$("sTime").value,place:$("sPlace").value,location:$("sLocation").value,icon:$("sIcon").value,note:$("sNote").value});
+  modal.close(); save();
+}
+function deleteSchedule(dayId,id){const d=data.days.find(x=>x.id===dayId);d.schedules=d.schedules.filter(s=>s.id!==id);save()}
+function openBudgetForm(){
+  modalForm("新增花費",`
+    <div class="form">
+      <input id="bItem" placeholder="項目">
+      <input id="bAmount" type="number" placeholder="金額">
+      <button class="primary" onclick="addBudget()">新增</button>
+    </div>`);
+}
+function addBudget(){data.budget.push({id:Date.now(),item:$("bItem").value,amount:Number($("bAmount").value||0)});modal.close();save()}
+function showPage(page, btn){
+  document.querySelectorAll(".bottom-nav button").forEach(b=>b.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+  if(page==="home"){render();return}
+  const content = {
+    allSchedule: allScheduleHtml(),
+    budget: listEditor("記帳本","budget"),
+    spots: simpleEditor("景點收藏","spots",["name","note"]),
+    stay: simpleEditor("住宿資訊","stay",["name","date","note"]),
+    flight: simpleEditor("航班資訊","flight",["no","time","note"]),
+    packing: packingHtml(),
+    album: `<p class="muted">相簿可先貼照片網址，之後也能再升級成上傳照片。</p>`+simpleEditor("相簿","album",["url","note"]),
+    map: `<div class="form"><input id="mapQ" placeholder="輸入景點"><button class="primary" onclick="openMap()">開啟 Google Maps</button></div>`,
+    more: `<div class="form"><button class="primary" onclick="showPage('stay')">住宿資訊</button><button class="primary" onclick="showPage('flight')">航班資訊</button><button class="primary" onclick="showPage('packing')">行李清單</button><button class="primary" onclick="exportPDF()">匯出PDF</button></div>`
   };
-  const vals = map[type].map(id=>document.getElementById(id).value.trim());
-  if(!vals.some(Boolean)) return alert("請先輸入內容");
-  data[type].push({id:Date.now(), vals});
-  map[type].forEach(id=>document.getElementById(id).value="");
-  save();
+  modalForm(page, content[page]||"");
 }
-
-function addBudget(){
-  const item = budgetItem.value.trim();
-  const amount = Number(budgetAmount.value || 0);
-  if(!item && !amount) return alert("請輸入花費");
-  data.budget.push({id:Date.now(), item, amount});
-  budgetItem.value=""; budgetAmount.value="";
-  save();
+function allScheduleHtml(){
+  return (data.days||[]).map((d,i)=>`<div class="list-card"><b>Day ${i+1}｜${d.date||""}</b>${(d.schedules||[]).map(s=>`<p>${s.time} ${s.place}</p>`).join("")}</div>`).join("");
 }
-function addPacking(){
-  const item = packItem.value.trim();
-  if(!item) return;
-  data.packing.push({id:Date.now(), item, done:false});
-  packItem.value=""; save();
+function listEditor(title,type){
+  return `<button class="primary" onclick="openBudgetForm()">新增</button>`+(data.budget||[]).map(x=>`<div class="list-card"><b>${x.item}</b><p>${x.amount}</p><button onclick="remove('${type}',${x.id})">刪除</button></div>`).join("");
 }
-function togglePacking(id){
-  const x=data.packing.find(i=>i.id===id); if(x){x.done=!x.done; save();}
+function simpleEditor(title,type,keys){
+  return `<div class="form">${keys.map(k=>`<input id="${type}_${k}" placeholder="${k}">`).join("")}<button class="primary" onclick="addSimple('${type}','${keys.join(",")}')">新增</button></div>`+
+  (data[type]||[]).map(x=>`<div class="list-card">${keys.map(k=>`<p><b>${k}</b> ${x[k]||""}</p>`).join("")}<button onclick="remove('${type}',${x.id})">刪除</button></div>`).join("");
 }
-function removeItem(type,id){
-  data[type]=data[type].filter(x=>x.id!==id); save();
+function addSimple(type,keysStr){
+  const keys=keysStr.split(","); const obj={id:Date.now()};
+  keys.forEach(k=>obj[k]=$(`${type}_${k}`).value);
+  data[type].push(obj); save(); showPage(type);
 }
-function openMap(){
-  const q = document.getElementById("mapName").value.trim();
-  if(q) window.open("https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q), "_blank");
+function packingHtml(){
+  return `<div class="form"><input id="packName" placeholder="物品"><button class="primary" onclick="addPack()">新增</button></div>`+
+  (data.packing||[]).map(x=>`<div class="list-card"><label><input type="checkbox" ${x.done?"checked":""} onchange="togglePack(${x.id})"> ${x.name}</label><br><button onclick="remove('packing',${x.id})">刪除</button></div>`).join("");
 }
-function exportPDF(){ window.print(); }
-
-function renderItinerary(){
-  dayTabs.innerHTML = (data.days||[]).map(d=>`
-    <button class="day-card ${d.id===selectedDayId?'active':''}" onclick="selectDay(${d.id})">
-      <b>${d.title}</b>
-      <small>${d.date || "未設定日期"}</small>
-    </button>
-  `).join("");
-
-  const day = (data.days||[]).find(d=>d.id===selectedDayId);
-  if(!day){
-    itineraryList.innerHTML = `<div class="card">請先新增日期，再開始安排行程。</div>`;
-    return;
-  }
-
-  itineraryList.innerHTML = `
-    <div class="card">
-      <div class="schedule-head">
-        <div><b>${day.title}</b><div class="small">${day.date || "未設定日期"}</div></div>
-        <button onclick="removeDay(${day.id})">刪除日期</button>
-      </div>
-    </div>
-    ${(day.schedules||[]).map(s=>`
-      <div class="card">
-        <div><b>${s.time || "未設定時間"}</b></div>
-        <div>${s.place || ""}</div>
-        <div class="small">${s.note || ""}</div>
-        <div class="actions"><button onclick="removeSchedule(${day.id},${s.id})">刪除</button></div>
-      </div>
-    `).join("")}
-  `;
-}
-
-function renderCards(type, el, labels=[]){
-  document.getElementById(el).innerHTML = (data[type]||[]).map(x=>{
-    let body = (x.vals||[]).map((v,i)=>v?`<div><b>${labels[i]||""}</b> ${v}</div>`:"").join("");
-    return `<div class="card">${body}<div class="actions"><button onclick="removeItem('${type}',${x.id})">刪除</button></div></div>`;
-  }).join("");
-}
-
-function render(){
-  document.body.className = data.theme || "cream";
-  tripTitle.textContent = data.title || "我的旅行";
-  tripSubtitle.textContent = data.subtitle || "";
-  renderItinerary();
-  renderCards("spots","spotsList",["景點","備註"]);
-  renderCards("stay","stayList",["住宿","日期","備註"]);
-  renderCards("flight","flightList",["航班","時間","備註"]);
-
-  budgetList.innerHTML = (data.budget||[]).map(x=>`<div class="card"><b>${x.item}</b><div>${x.amount}</div><div class="actions"><button onclick="removeItem('budget',${x.id})">刪除</button></div></div>`).join("");
-  totalAmount.textContent = (data.budget||[]).reduce((s,x)=>s+Number(x.amount||0),0).toLocaleString();
-
-  packingList.innerHTML = (data.packing||[]).map(x=>`<div class="card"><label><input type="checkbox" ${x.done?"checked":""} onchange="togglePacking(${x.id})"> ${x.item}</label><div class="actions"><button onclick="removeItem('packing',${x.id})">刪除</button></div></div>`).join("");
-}
+function addPack(){data.packing.push({id:Date.now(),name:$("packName").value,done:false});save();showPage("packing")}
+function togglePack(id){const x=data.packing.find(i=>i.id===id);x.done=!x.done;save()}
+function remove(type,id){data[type]=data[type].filter(x=>x.id!==id);save();showPage(type)}
+function openMap(){const q=$("mapQ")?.value||""; if(q) window.open("https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(q),"_blank")}
+function shareSite(){navigator.share?navigator.share({title:data.title,url:location.href}):alert(location.href)}
+function exportPDF(){window.print()}
