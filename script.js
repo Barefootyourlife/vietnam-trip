@@ -186,7 +186,11 @@ function openBudgetForm(){
 function addBudget(){data.budget.push({id:Date.now(),item:$("bItem").value,amount:Number($("bAmount").value||0)});$("modal").close();save()}
 function showPage(page, btn){
   document.querySelectorAll(".bottom-nav button").forEach(b=>b.classList.remove("active"));
-  if(btn) btn.classList.add("active");
+  if(btn){
+    btn.classList.add("active");
+  }else if(page==="home"){
+    document.querySelector(".home-tab")?.classList.add("active");
+  }
   if(page==="home"){render();return}
   const content = {
     allSchedule: allScheduleHtml(),

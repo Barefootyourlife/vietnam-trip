@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Travel Planner</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=7" />
 </head>
 <body>
   <div class="app-shell">
@@ -60,21 +60,10 @@
         </section>
       </aside>
     </main>
-
-    <section class="quick-actions">
-      <button onclick="showPage('map')">📍<span>地圖</span></button>
-      <button onclick="showPage('spots')">❤<span>景點</span></button>
-      <button onclick="showPage('budget')">👛<span>記帳本</span></button>
-      <button class="big-add" onclick="openScheduleForm()">＋<span>新增</span></button>
-      <button onclick="showPage('packing')">🧳<span>行李</span></button>
-      <button onclick="showPage('album')">📷<span>相簿</span></button>
-      <button onclick="exportPDF()">📄<span>匯出PDF</span></button>
-    </section>
-
     <nav class="bottom-nav">
-      <button class="active" onclick="showPage('home', this)">⌂<span>首頁</span></button>
-      <button onclick="showPage('allSchedule', this)">▣<span>行程</span></button>
       <button onclick="showPage('map', this)">◇<span>地圖</span></button>
+      <button onclick="showPage('allSchedule', this)">▣<span>行程</span></button>
+      <button class="home-tab active" onclick="showPage('home', this)">⌂<span>首頁</span></button>
       <button onclick="showPage('budget', this)">▤<span>記帳</span></button>
       <button onclick="showPage('spots', this)">♡<span>景點</span></button>
       <button onclick="showPage('more', this)">⋯<span>更多</span></button>
@@ -89,6 +78,6 @@
 
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=7"></script>
 </body>
 </html>
