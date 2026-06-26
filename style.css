@@ -611,3 +611,166 @@ dialog .primary,.close{
     padding-right:120px !important;
   }
 }
+
+
+/* V7：更多移到右上角小漢堡，下方只留 5 個項目 */
+.hamburger{
+  position:absolute;
+  right:12px;
+  top:10px;
+  z-index:5;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:rgba(255,253,248,.86);
+  color:var(--brown);
+  box-shadow:var(--shadow);
+  font-size:24px;
+  font-weight:900;
+}
+
+.bottom-nav{
+  display:grid !important;
+  grid-template-columns:1fr 1fr 92px 1fr 1fr !important;
+  height:88px !important;
+  align-items:end !important;
+  padding:8px 12px !important;
+}
+
+.bottom-nav button{
+  margin:0 !important;
+}
+
+.bottom-nav button:nth-child(1)::before{content:"📍" !important;}
+.bottom-nav button:nth-child(2)::before{content:"📅" !important;}
+.bottom-nav button:nth-child(4)::before{content:"👛" !important;}
+.bottom-nav button:nth-child(5)::before{content:"♡" !important;font-size:28px !important;}
+
+.bottom-nav .home{
+  left:50% !important;
+  top:-32px !important;
+  transform:translateX(-50%) !important;
+  margin:0 !important;
+}
+
+.bottom-nav .home::before{
+  content:"🏠" !important;
+}
+
+/* 不再預留第六顆按鈕的距離 */
+.bottom-nav button:nth-child(2){
+  margin-right:42px !important;
+}
+.bottom-nav button:nth-child(4){
+  margin-left:42px !important;
+}
+
+/* 更多頁從漢堡進入時不需要底部高亮 */
+#morePage .page-title h2::before{
+  content:"☰ ";
+  color:var(--brown);
+}
+
+/* V7：景點收藏使用胡志明市感的圖片 */
+#spotList .list-item::before{
+  content:"";
+  position:absolute;
+  right:16px;
+  top:18px;
+  width:112px !important;
+  height:112px !important;
+  border-radius:24px;
+  background:
+    linear-gradient(135deg,rgba(255,253,248,.08),rgba(255,253,248,.18)),
+    url("https://images.unsplash.com/photo-1583417319070-4a69db38a482?q=80&w=700&auto=format&fit=crop") !important;
+  background-size:cover !important;
+  background-position:center !important;
+  opacity:.96 !important;
+  z-index:0;
+}
+
+#spotList .list-item{
+  min-height:156px !important;
+  padding-right:142px !important;
+}
+
+#spotList .list-item h3,
+#spotList .list-item p,
+#spotList .list-item button{
+  position:relative;
+  z-index:1;
+}
+
+/* 如果景點名稱含胡志明，讓圖片更像城市天際線 */
+#spotList .list-item::after{
+  display:none !important;
+}
+
+/* 手機微調 */
+@media(max-width:430px){
+  .hamburger{
+    right:6px;
+    top:6px;
+    width:44px;
+    height:44px;
+    font-size:22px;
+  }
+  .bottom-nav{
+    grid-template-columns:1fr 1fr 88px 1fr 1fr !important;
+    width:calc(100vw - 24px) !important;
+  }
+  .bottom-nav button:nth-child(2){
+    margin-right:38px !important;
+  }
+  .bottom-nav button:nth-child(4){
+    margin-left:38px !important;
+  }
+  #spotList .list-item{
+    padding-right:128px !important;
+  }
+  #spotList .list-item::before{
+    width:104px !important;
+    height:104px !important;
+  }
+}
+
+
+/* V8 線條圖示 */
+.bottom-nav button::before{content:none !important;}
+
+.bottom-nav button{
+ display:flex !important;
+ flex-direction:column !important;
+ align-items:center !important;
+ justify-content:center !important;
+ gap:6px;
+}
+
+.bottom-nav i{
+ width:24px;
+ height:24px;
+ stroke-width:2;
+ color:var(--muted);
+}
+
+.bottom-nav button.active i,
+.bottom-nav .home i{
+ color:var(--brown);
+}
+
+.bottom-nav .home{
+ display:flex !important;
+ flex-direction:column !important;
+ align-items:center !important;
+ justify-content:center !important;
+}
+
+.bottom-nav .home i{
+ width:30px;
+ height:30px;
+ color:#fff !important;
+}
+
+.bottom-nav span{
+ font-size:13px !important;
+}

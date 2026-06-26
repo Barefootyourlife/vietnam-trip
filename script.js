@@ -50,7 +50,7 @@ function showPage(name,btn){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   $(name+"Page").classList.add("active");
   document.querySelectorAll(".bottom-nav button").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
+  if(btn) btn.classList.add("active");
   render();
 }
 
@@ -201,3 +201,6 @@ function renderHomeInfo(){
   if($("homeStayPreview")) $("homeStayPreview").textContent = stay ? `${stay.name||"住宿"}｜${stay.date||""}` : "尚未新增住宿";
   if($("homeFlightPreview")) $("homeFlightPreview").textContent = flight ? `${flight.no||"航班"}｜${flight.time||""}` : "尚未新增航班";
 }
+
+
+setTimeout(()=>{ if(window.lucide){ lucide.createIcons(); } },300);
