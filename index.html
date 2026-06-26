@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Travel Planner</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="kicker" id="tripSubtitle">Buon Viaggio · Vietnam Trip</p>
+        <h1><span id="tripTitle">胡志明 & 富國島</span> <button class="edit-title" onclick="openSettings()">✎</button></h1>
+        <p class="date-range" id="rangeText">旅行日期・雲端同步</p>
+      </div>
+      <div class="top-actions">
+        <button onclick="shareSite()">分享</button>
+        <button onclick="openSettings()">設定</button>
+      </div>
+    </header>
+
+    <section class="date-row-wrap">
+      <button class="arrow" onclick="moveDay(-1)">‹</button>
+      <div id="dayTabs" class="date-row"></div>
+      <button class="add-date" onclick="openDayForm()">＋<small>新增日期</small></button>
+      <button class="arrow" onclick="moveDay(1)">›</button>
+    </section>
+
+    <div class="progress-wrap">
+      <div class="progress"><div id="progressBar"></div></div>
+      <p id="dayCount">Day 1 / 1</p>
+    </div>
+
+    <main class="dashboard">
+      <section class="card itinerary-card">
+        <div class="card-head">
+          <h2>🗓️ 今日行程</h2>
+          <button class="link" onclick="openScheduleForm()">＋新增</button>
+        </div>
+        <div id="todayList"></div>
+      </section>
+
+      <aside class="side-grid">
+        <section class="card">
+          <div class="card-head"><h2>💰 總花費</h2><button class="link" onclick="openBudgetForm()">記帳</button></div>
+          <div class="money" id="totalAmount">0</div>
+          <p class="muted">已同步到 Firebase</p>
+          <div class="bar"><span id="budgetBar"></span></div>
+        </section>
+
+        <section class="card mini">
+          <div class="card-head"><h2>🏨 住宿資訊</h2><button class="link" onclick="showPage('stay')">查看</button></div>
+          <div id="stayPreview" class="preview"></div>
+        </section>
+
+        <section class="card mini">
+          <div class="card-head"><h2>✈️ 航班資訊</h2><button class="link" onclick="showPage('flight')">查看</button></div>
+          <div id="flightPreview" class="preview"></div>
+        </section>
+      </aside>
+    </main>
+
+    <section class="quick-actions">
+      <button onclick="showPage('map')">📍<span>地圖</span></button>
+      <button onclick="showPage('spots')">❤<span>景點收藏</span></button>
+      <button onclick="showPage('budget')">👛<span>記帳本</span></button>
+      <button class="big-add" onclick="openScheduleForm()">＋<span>新增行程</span></button>
+      <button onclick="showPage('packing')">🧳<span>行李清單</span></button>
+      <button onclick="showPage('album')">📷<span>相簿</span></button>
+      <button onclick="exportPDF()">📄<span>匯出PDF</span></button>
+    </section>
+
+    <nav class="bottom-nav">
+      <button class="active" onclick="showPage('home', this)">⌂<span>首頁</span></button>
+      <button onclick="showPage('allSchedule', this)">▣<span>行程</span></button>
+      <button onclick="showPage('map', this)">◇<span>地圖</span></button>
+      <button onclick="showPage('budget', this)">▤<span>記帳</span></button>
+      <button onclick="showPage('spots', this)">♡<span>景點</span></button>
+      <button onclick="showPage('more', this)">⋯<span>更多</span></button>
+    </nav>
+  </div>
+
+  <dialog id="modal">
+    <h2 id="modalTitle"></h2>
+    <div id="modalBody"></div>
+    <button class="primary" onclick="modal.close()">關閉</button>
+  </dialog>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
