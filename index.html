@@ -31,12 +31,20 @@
     <main>
       <section id="itinerary" class="panel active">
         <h2>每日行程</h2>
+
+        <div class="form day-form">
+          <input id="newDayDate" type="date" />
+          <input id="newDayTitle" placeholder="日期標題，例如 Day 1｜胡志明市" />
+          <button onclick="addDay()">新增日期</button>
+        </div>
+
+        <div id="dayTabs" class="day-tabs"></div>
+
         <div class="form">
-          <input id="dayInput" placeholder="Day 1 / 6月26日" />
           <input id="timeInput" placeholder="時間 例如 09:00" />
           <input id="placeInput" placeholder="地點 / 行程" />
           <textarea id="noteInput" placeholder="交通、備註、訂位資訊"></textarea>
-          <button onclick="addItem('itinerary')">新增行程</button>
+          <button onclick="addScheduleToSelectedDay()">新增到這一天</button>
         </div>
         <div id="itineraryList" class="list"></div>
       </section>
