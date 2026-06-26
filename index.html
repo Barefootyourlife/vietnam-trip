@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>旅行行程規劃</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="hero">
+      <div>
+        <p id="subtitle" class="kicker">Buon Viaggio · Vietnam Trip</p>
+        <h1 id="mainTitle">胡志明 & 富國島</h1>
+        <p class="page-title">行程規劃</p>
+      </div>
+      <button class="round" onclick="openSettings()">⚙️</button>
+    </section>
+
+    <section id="home" class="page active">
+      <div class="card setup-card">
+        <label>旅程名稱</label>
+        <input id="tripName" placeholder="例如：越南 5 天 4 夜自由行" />
+        <div class="grid2">
+          <div><label>出發日期</label><input id="startDate" type="date" /></div>
+          <div><label>天數</label><input id="tripDays" type="number" min="1" value="5" /></div>
+        </div>
+        <button onclick="generateDays()">產生行程日期</button>
+      </div>
+
+      <div id="dayTabs" class="day-tabs"></div>
+
+      <div class="card section-head">
+        <h2>今日行程</h2>
+        <button onclick="openScheduleForm()">＋新增</button>
+      </div>
+      <div id="scheduleList"></div>
+    </section>
+
+    <section id="map" class="page">
+      <div class="card section-head"><h2>地圖導航</h2><button onclick="openMapForm()">＋新增</button></div>
+      <div id="mapList"></div>
+    </section>
+
+    <section id="budget" class="page">
+      <div class="card section-head"><h2>旅費記帳</h2><button onclick="openBudgetForm()">＋新增</button></div>
+      <div class="total">總花費：<span id="totalMoney">0</span></div>
+      <div id="budgetList"></div>
+    </section>
+
+    <section id="places" class="page">
+      <div class="card section-head"><h2>景點收藏</h2><button onclick="openPlaceForm()">＋新增</button></div>
+      <div id="placeList"></div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav active" onclick="showPage('home', this)">📅<span>行程</span></button>
+    <button class="nav" onclick="showPage('map', this)">🗺️<span>地圖</span></button>
+    <button class="home-dot" onclick="showPage('home', document.querySelector('.nav'))">⌂</button>
+    <button class="nav" onclick="showPage('budget', this)">👛<span>記帳</span></button>
+    <button class="nav" onclick="showPage('places', this)">📌<span>景點</span></button>
+  </nav>
+
+  <div id="modal" class="modal hidden">
+    <div class="modal-box">
+      <button class="close" onclick="closeModal()">×</button>
+      <h3 id="modalTitle"></h3>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
