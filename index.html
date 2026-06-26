@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vietnam Trip Planner｜胡志明＆富國島行程</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <p class="eyebrow">Buon Viaggio · Vietnam Trip</p>
+      <h1>胡志明＆富國島<br><span>行程規劃</span></h1>
+      <button id="clearAll" class="ghost-btn" title="清空全部">⚙</button>
+    </header>
+
+    <section class="trip-card">
+      <label>旅程名稱</label>
+      <input id="tripName" type="text" placeholder="例如：越南 5 天 4 夜自由行" />
+      <div class="date-row">
+        <div>
+          <label>出發日期</label>
+          <input id="startDate" type="date" />
+        </div>
+        <div>
+          <label>天數</label>
+          <input id="dayCount" type="number" min="1" max="30" value="5" />
+        </div>
+      </div>
+      <button id="generateDays" class="main-btn">產生行程日期</button>
+    </section>
+
+    <section class="date-strip" id="dateStrip"></section>
+
+    <section class="today-card">
+      <div class="card-title">
+        <h2>今日行程</h2>
+        <button id="addSchedule" class="small-btn">＋新增</button>
+      </div>
+      <div id="scheduleList" class="schedule-list"></div>
+    </section>
+
+    <section class="editor-card" id="editorCard">
+      <h2>新增 / 編輯行程</h2>
+      <input id="editId" type="hidden" />
+      <label>時間</label>
+      <input id="timeInput" type="time" />
+      <label>標題</label>
+      <input id="titleInput" type="text" placeholder="例如：濱城市場 / Sao Beach" />
+      <label>城市 / 地區</label>
+      <input id="cityInput" type="text" placeholder="例如：胡志明市、富國島" />
+      <label>備註</label>
+      <textarea id="noteInput" rows="3" placeholder="交通、門票、餐廳、提醒事項都可以寫"></textarea>
+      <div class="actions">
+        <button id="saveSchedule" class="main-btn">儲存行程</button>
+        <button id="cancelEdit" class="ghost-small">取消</button>
+      </div>
+    </section>
+
+    <nav class="bottom-nav">
+      <button>📅<span>行程</span></button>
+      <button>🗺️<span>地圖</span></button>
+      <button class="home">⌂</button>
+      <button>👛<span>記帳</span></button>
+      <button>🔖<span>景點</span></button>
+    </nav>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
